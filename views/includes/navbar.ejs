@@ -1,0 +1,115 @@
+<nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#"><i class="fa-solid fa-book"></i></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/home">Home</a>
+                </li>
+                <li><a class="nav-link active" href="/home/showMyCourses">My Courses</a></li>
+                <% if(currUser && currUser.role==='instructor'){%>
+                <li><a class="nav-link active" href="/createCourse"><b>Create Course</b></a></li>
+                <% } %>
+                <a class="nav-link" href="/vision"><b>Our Vision</b></a>
+            </ul>
+  
+            <form class="d-flex w-50 mx-auto" action="/home/search" method="GET">
+                <input class="form-control me-2" type="search" placeholder="Search for courses..." aria-label="Search" name="search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+  
+            <div class="navbar-nav ms-auto">
+                <% if (!currUser) { %>
+                <a class="signUp nav-link" href="/signup"><b>Sign Up</b></a>
+                <a class="login nav-link" href="/login"><b>Login</b></a>
+                <% } else { %>
+                <li><a class="logout nav-link" href="/logout">Log out</a></li>
+                <% } %>
+                <!-- Chatbot Toggle Button -->
+                <button class="btn btn-outline-primary ms-2" id="chatbot-toggle">
+                    <i class="fa-solid fa-robot"></i> Chat
+                </button>
+            </div>
+        </div>
+    </div>
+  </nav>
+  
+  <!-- Chatbot Widget (Hidden by Default) -->
+  <div id="chatbot-container" class="position-fixed" style="bottom: 20px; right: 20px; width: 350px; height: 500px; display: none; z-index: 1000;">
+    <div class="card">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <span>Course Assistant</span>
+            <button class="btn-close btn-close-white" id="chatbot-close"></button>
+        </div>
+        <div class="card-body" id="chatbot-messages" style="height: 400px; overflow-y: auto;"></div>
+        <div class="card-footer">
+            <div class="input-group">
+                <input type="text" class="form-control" id="chatbot-input" placeholder="Ask me anything...">
+                <button class="btn btn-primary" id="chatbot-send">Send</button>
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+  <!-- After your chatbot-container HTML in navbar.ejs -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+    // DOM elements
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    const chatbotContainer = document.getElementById('chatbot-container');
+    const chatbotClose = document.getElementById('chatbot-close');
+    const chatbotMessages = document.getElementById('chatbot-messages');
+    const chatbotInput = document.getElementById('chatbot-input');
+    const chatbotSend = document.getElementById('chatbot-send');
+
+    // Toggle chatbot visibility
+    chatbotToggle.addEventListener('click', () => {
+        const isHidden = chatbotContainer.style.display === 'none' || chatbotContainer.style.display === '';
+        chatbotContainer.style.display = isHidden ? 'block' : 'none';
+        if (isHidden && chatbotMessages.children.length === 0) {
+            addMessage('Bot', 'Hello! How can I assist you with your courses today?');
+        }
+    });
+
+    chatbotClose.addEventListener('click', () => {
+        chatbotContainer.style.display = 'none';
+    });
+
+    // Send message to backend
+    async function sendMessage() {
+        const message = chatbotInput.value.trim();
+        if (!message) return;
+
+        addMessage('You', message);
+        chatbotInput.value = '';
+
+        try {
+            const response = await axios.post('/api/chat', { message });
+            addMessage('Bot', response.data.reply);
+        } catch (error) {
+            console.error('Error sending message:', error);
+            addMessage('Bot', 'Oops, something went wrong! Please try again.');
+        }
+    }
+
+    // Event listeners for sending messages
+    chatbotSend.addEventListener('click', sendMessage);
+    chatbotInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    // Add message to chat display
+    function addMessage(sender, text) {
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('mb-2', sender === 'You' ? 'text-end' : 'text-start');
+        messageDiv.innerHTML = `<strong>${sender}:</strong> ${text}`;
+        chatbotMessages.appendChild(messageDiv);
+        chatbotMessages.scrollTop = chatbotMessages.scrollHeight; // Auto-scroll to bottom
+    }
+</script>

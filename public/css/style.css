@@ -1,0 +1,198 @@
+.card-img-overlay {
+    opacity: 0;
+}
+
+.card-img-overlay:hover {
+    opacity: 0.2;
+    background-color: white;
+}
+
+body {
+    display: flex !important;
+    flex-direction: column !important;
+    min-height: 100vh !important;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(to right, #eef2f3, #8e9eab);
+}
+
+.home {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 15px;
+    padding: 20px;
+    width: 75rem !important;
+    margin-left: 5px;
+}
+
+.listing-card {
+    border: none !important;
+    border-radius: 1rem;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+}
+
+.listing-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.card-img-top {
+    border-radius: 1rem 1rem 0 0 !important;
+    height: 200px;
+    width: 100% !important;
+    object-fit: cover;
+}
+
+.navbar {
+    height: auto !important;
+    padding: 20px;
+    margin-bottom: 20px;
+    background: #005f73;
+    color: white;
+}
+
+.nav-link {
+    opacity: 0.7;
+}
+
+.nav-link:hover {
+    opacity: 1;
+}
+
+.editing-btn {
+    background-color: #FF6666 !important;
+}
+
+.editing {
+    display: flex !important;
+    flex-direction: row;
+}
+
+.editing a {
+    margin: 7px;
+}
+
+.addCourseBtn,
+.uploadBtn {
+    border-radius: 20px !important;
+    padding: 8px;
+    border: 2px solid green !important;
+    color: black;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.addCourseBtn:hover,
+.uploadBtn:hover {
+    background-color: green;
+    color: white;
+}
+
+.uploadBtn {
+    padding: 10px;
+}
+
+.cardImage {
+    width: 100px !important;
+    height: 100px;
+    margin-left: 6rem;
+    margin-top: 5px;
+    border-radius: 4px;
+}
+
+.cardImg {
+    height: 20rem;
+    width: 300px;
+}
+
+#chatbot-container .card {
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#chatbot-messages {
+    padding: 10px;
+}
+
+#chatbot-messages .text-end {
+    color: #007bff;
+}
+
+#chatbot-messages .text-start {
+    color: #333;
+}
+
+.logout,
+.signUp,
+.login {
+    color: black;
+    text-decoration: none;
+    border: 2px solid red;
+    padding: 5px;
+    border-radius: 10px;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.logout:hover,
+.signUp:hover,
+.login:hover {
+    background: rgb(159, 39, 39);
+    color: white !important;
+    text-decoration: none;
+}
+
+.login {
+    margin-left: 5px;
+}
+
+.card-body {
+    flex-grow: 1;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+}
+
+.listing-card img {
+    object-fit: cover;
+}
+
+/* Animations */
+.animate-fade-in {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-slide-in {
+    opacity: 0;
+    transform: translateX(-30px);
+    animation: slideIn 1s ease-out forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
