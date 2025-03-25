@@ -73,41 +73,30 @@ app.post('/api/chat', async (req, res) => {
 
     try {
         const apiKey = process.env.GEMINI_API_KEY;
-        if (!apiKey) {
-            throw new Error('Gemini API key is not set in environment variables.');
-        }
-
         const geminiEndpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
         const response = await axios.post(
             `${geminiEndpoint}?key=${apiKey}`,
             {
-                contents: [
-                    {
-                        parts: [
-                            { text: userMessage }
-                        ]
-                    }
-                ]
+                contents: [{ parts: [{ text: userMessage }] }]
             },
-            {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            }
+            { headers: { 'Content-Type': 'application/json' } }
         );
 
-      
-        console.log('Gemini API response:', JSON.stringify(response.data, null, 2));
+        // ✅ Debugging: Print the full response to check structure
+        console.log('Full API Response:', JSON.stringify(response.data, null, 2));
 
+        // ✅ Check if response contains expected data
+        const botReply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response.";
         
-        const botReply = response.data.candidates[0].content.parts[0].text;
         res.json({ reply: botReply });
+
     } catch (error) {
         console.error('Error with Gemini API:', error.response ? error.response.data : error.message);
         res.status(500).json({ reply: 'Sorry, I couldn’t process your request right now!' });
     }
 });
+
 
 app.get('/api/health', (req, res) => {
     res.json({ status: 'OK', message: 'Server is running' });
