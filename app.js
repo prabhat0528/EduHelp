@@ -72,7 +72,7 @@ app.post('/api/chat', async (req, res) => {
     }
 
     try {
-        const apiKey = process.env.GEMINI_API_KEY;
+        const apiKey = process.env.API_KEY;
         const geminiEndpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
         const response = await axios.post(
@@ -83,10 +83,10 @@ app.post('/api/chat', async (req, res) => {
             { headers: { 'Content-Type': 'application/json' } }
         );
 
-        // ✅ Debugging: Print the full response to check structure
+       
         console.log('Full API Response:', JSON.stringify(response.data, null, 2));
 
-        // ✅ Check if response contains expected data
+       
         const botReply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response.";
         
         res.json({ reply: botReply });
