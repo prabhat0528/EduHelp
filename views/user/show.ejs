@@ -1,12 +1,11 @@
 <% layout("/layouts/boilerplate") %>
-
-<div class="row">
-    <div class="col-8 offset-2">
-        <h3><%= courseDetail.title %></h3>
-        <div class="card listing-card rounded flex justify-center " style="width: 20rem; height:25rem; border: 2px solid red;">
-            <img src="<%= courseDetail.profilePhoto.url %>" class="cardImage" alt="image">
-            <div class="card-body">
-                <p class="card-text"><b>Created BY: </b>
+<div class="row justify-content-center">
+    <div class="col-11 col-md-8 col-lg-8">
+        <h3 class="text-center mb-4"><%= courseDetail.title %></h3>
+        <div class="card listing-card mx-auto rounded flex justify-center" style="max-width: 20rem; height: auto; border: 2px solid red;">
+            <img src="<%= courseDetail.profilePhoto.url %>" class="cardImage mx-auto" alt="<%= courseDetail.title %>">
+            <div class="card-body text-center">
+                <p class="card-text"><b>Created By: </b>
                     <% if (courseDetail.owner) { %>
                         <i><%= courseDetail.owner.username %></i>
                     <% } else { %>
@@ -16,38 +15,30 @@
                 <p class="card-text"><b>Description: </b><%= courseDetail.description %></p>
             </div>
         </div>
-
         <% if (!(currUser && currUser._id && courseDetail.owner && currUser._id.equals(courseDetail.owner._id))) { %>
-            <form method="POST" action="/home/addcourse/<%=courseDetail._id%>">
-                <button class="addCourseBtn">Add to My courses</button>
+            <form method="POST" action="/home/addcourse/<%=courseDetail._id%>" class="text-center mt-3">
+                <button class="addCourseBtn">Add to My Courses</button>
             </form>
         <% } %>
-
         <% if (currUser && currUser._id && courseDetail.owner && currUser._id.equals(courseDetail.owner._id)) { %>
-            <div class="editing mt-3">
+            <div class="editing mt-3 d-flex flex-wrap justify-content-center gap-2">
                 <a href="/home/<%= courseDetail._id %>/addLecture" class="btn btn-danger">Add Lecture</a>
                 <form method="POST" action="/home/<%= courseDetail._id %>?_method=DELETE" class="d-inline">
-                    <button class="btn btn-dark mt-2 mb-1">Delete Course</button>
+                    <button class="btn btn-dark">Delete Course</button>
                 </form>
             </div>
         <% } %>
-
-        <div class="mt-2">
-            <hr style="border: 2px solid red; border-width: 3px; color: red; height: 3px;">
-
+        <div class="mt-4">
+            <hr style="border: 2px solid red;">
             <% if (courseDetail.lectures && courseDetail.lectures.length > 0) { %>
-                <h4>Lectures:</h4>
-
-                <div class="d-flex flex-wrap justify-content-start gap-3 h-full">
+                <h4 class="mb-3">Lectures:</h4>
+                <div class="d-flex flex-wrap justify-content-start gap-3">
                     <% courseDetail.lectures.forEach((lecture) => { %>
-                        <div class="card" style="width: 220px; height: 430px; border: 1px solid #ddd; box-shadow: 2px 2px 8px rgba(0,0,0,0.1);">
-                            <img src="<%= lecture.profilePhoto.url %>" class="card-img-top" alt="Lecture Image"
-                                 style="object-fit: cover; width: 100%; height: 160px;">
-
+                        <div class="card" style="width: 100%; max-width: 220px; height: auto; border: 1px solid #ddd; box-shadow: 2px 2px 8px rgba(0,0,0,0.1);">
+                            <img src="<%= lecture.profilePhoto.url %>" class="card-img-top" alt="<%= lecture.title %>" style="object-fit: cover; width: 100%; height: 160px;">
                             <div class="card-body d-flex flex-column text-center">
                                 <h5 class="card-title"><%= lecture.title %></h5>
                                 <p class="card-text"><%= lecture.description %></p>
-
                                 <div class="mt-auto">
                                     <a href="<%= lecture.video.url %>" class="btn btn-primary w-100">Watch Lecture</a>
                                     <% if (currUser && currUser._id && courseDetail.owner && currUser._id.equals(courseDetail.owner._id)) { %>
@@ -61,15 +52,6 @@
             <% } else { %>
                 <p>No lectures available for this course.</p>
             <% } %>
-
-            <!-- <% if (currUser && currUser._id && courseDetail.owner && currUser._id.equals(courseDetail.owner._id)) { %>
-                <div class="editing mt-3">
-                    <a href="/home/<%= courseDetail._id %>/addLecture" class="btn btn-danger">Add Lecture</a>
-                    <form method="POST" action="/home/<%= courseDetail._id %>?_method=DELETE" class="d-inline">
-                        <button class="btn btn-dark mt-2 mb-1">Delete Course</button>
-                    </form>
-                </div>
-            <% } %> -->
         </div>
     </div>
 </div>
