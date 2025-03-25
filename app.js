@@ -60,7 +60,7 @@ app.get("/", (req, res) => {
     res.redirect("/home");
 });
 
-// ✅ Use user routes
+
 app.use("/", userRoute);
 app.use("/",courseRoute);
 
@@ -72,11 +72,15 @@ app.post('/api/chat', async (req, res) => {
     }
 
     try {
-        const apiKey = process.env.GEMINI_API_KEY; // Load API key from .env
-        const geminiEndpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+        const apiKey = process.env.GEMINI_API_KEY;
+        if (!apiKey) {
+            throw new Error('Gemini API key is not set in environment variables.');
+        }
+
+        const geminiEndpoint = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent';
 
         const response = await axios.post(
-            `${geminiEndpoint}?key=${process.env.API_KEY}`, // Gemini uses query param for API key
+            `${geminiEndpoint}?key=${apiKey}`,
             {
                 contents: [
                     {
@@ -93,8 +97,10 @@ app.post('/api/chat', async (req, res) => {
             }
         );
 
-        // Extract the reply from Gemini's response
-        console.log(response);
+      
+        console.log('Gemini API response:', JSON.stringify(response.data, null, 2));
+
+        
         const botReply = response.data.candidates[0].content.parts[0].text;
         res.json({ reply: botReply });
     } catch (error) {
@@ -103,12 +109,11 @@ app.post('/api/chat', async (req, res) => {
     }
 });
 
-// Health check endpoint (optional improvement)
 app.get('/api/health', (req, res) => {
     res.json({ status: 'OK', message: 'Server is running' });
 });
 
-// ✅ Only one 404 error handler
+
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "This Route Doesn't Exist"));
 });
