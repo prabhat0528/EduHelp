@@ -10,10 +10,10 @@ const User = require("./models/user");
 const mongoose = require("mongoose");
 const session = require("express-session");
 const userRoute = require("./routes/user");
-const courseRoute=require("./routes/course");
+const courseRoute = require("./routes/course");
 const bodyParser = require("body-parser");
 const course = require("./models/course");
-const axios=require("axios");
+const axios = require("axios");
 
 require("dotenv").config();
 
@@ -60,10 +60,10 @@ app.get("/", (req, res) => {
     res.redirect("/home");
 });
 
-
 app.use("/", userRoute);
-app.use("/",courseRoute);
+app.use("/", courseRoute);
 
+// Chatbot API Route
 app.post('/api/chat', async (req, res) => {
     const userMessage = req.body.message;
 
@@ -83,12 +83,18 @@ app.post('/api/chat', async (req, res) => {
             { headers: { 'Content-Type': 'application/json' } }
         );
 
-       
         console.log('Full API Response:', JSON.stringify(response.data, null, 2));
 
-       
-        const botReply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response.";
+        let botReply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response.";
         
+        // Clean the response to remove markdown
+        botReply = botReply
+            .replace(/```json/g, '')
+            .replace(/```/g, '')
+            .replace(/``/g, '')
+            .replace(/`/g, '')
+            .trim();
+
         res.json({ reply: botReply });
 
     } catch (error) {
@@ -97,16 +103,13 @@ app.post('/api/chat', async (req, res) => {
     }
 });
 
-
 app.get('/api/health', (req, res) => {
     res.json({ status: 'OK', message: 'Server is running' });
 });
 
-
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "This Route Doesn't Exist"));
 });
-
 
 app.listen(3000, () => {
     console.log("App is listening on port 3000");

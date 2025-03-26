@@ -233,10 +233,6 @@ router.post("/home/addCourse/:id", async (req, res) => {
     }
 });
 
-
-
-
-// SHOW COURSE DETAILS
 // SHOW COURSE DETAILS
 router.get("/home/:id", async (req, res) => {
     try {

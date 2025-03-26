@@ -6,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatbotInput = document.getElementById('chatbot-input');
     const chatbotSend = document.getElementById('chatbot-send');
 
-   
     console.log('Chatbot elements:', {
         chatbotToggle,
         chatbotContainer,
@@ -24,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
     let hasGreeted = false;
 
     chatbotToggle.addEventListener('click', () => {
-        console.log('Chatbot toggle clicked'); 
+        console.log('Chatbot toggle clicked');
         const isHidden = chatbotContainer.style.display === 'none' || chatbotContainer.style.display === '';
         chatbotContainer.style.display = isHidden ? 'block' : 'none';
 
@@ -34,9 +33,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Close chatbot
     chatbotClose.addEventListener('click', () => {
-        console.log('Chatbot close clicked'); 
+        console.log('Chatbot close clicked');
         chatbotContainer.style.display = 'none';
     });
 
@@ -51,13 +49,12 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Display user message
         addMessage('You', message);
         chatbotInput.value = '';
 
         try {
             const response = await axios.post('/api/chat', { message });
-            addMessage('Bot', response.data.reply);
+            addMessage('Bot', cleanMessage(response.data.reply));
         } catch (error) {
             console.error('Error sending message:', error);
             let errorMessage = 'Oops, something went wrong! Please try again.';
@@ -66,13 +63,21 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (error.request) {
                 errorMessage = 'Network error: Unable to reach the server. Please check your connection.';
             }
-            addMessage('Bot', errorMessage);
+            addMessage('Bot', cleanMessage(errorMessage));
         } finally {
             isSending = false;
         }
     }
 
-    // Add message to chat
+    function cleanMessage(text) {
+        return text
+            .replace(/```json/g, '') 
+            .replace(/```/g, '')     
+            .replace(/``/g, '')      
+            .replace(/`/g, '')       
+            .trim();                 
+    }
+
     function addMessage(sender, text) {
         const messageDiv = document.createElement('div');
         messageDiv.classList.add('mb-2', sender === 'You' ? 'text-end' : 'text-start');
@@ -81,15 +86,14 @@ document.addEventListener('DOMContentLoaded', () => {
         chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
     }
 
-    // Event listeners for sending messages
     chatbotSend.addEventListener('click', () => {
-        console.log('Send button clicked'); 
+        console.log('Send button clicked');
         sendMessage();
     });
 
     chatbotInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
-            console.log('Enter key pressed'); 
+            console.log('Enter key pressed');
             sendMessage();
         }
     });
