@@ -65,7 +65,7 @@
       <div>
         <button
           type="submit"
-          class="w-full sm:w-auto px-6 py-2.5 bg-secondary text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 transition-colors"
+          class="w-full sm:w-auto px-6 py-2.5 bg-green-100 text-white rounded-lg hover:bg-green-600 focus:outline-none focus:ring-2 focus:ring-secondary focus:ring-offset-2 transition-colors"
         >
           Sign Up
         </button>
@@ -74,104 +74,3 @@
   </div>
 </div>
 
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.getElementById('signupForm');
-  const usernameInput = document.getElementById('username');
-  const emailInput = document.getElementById('email');
-  const passwordInput = document.getElementById('password');
-  const roleInput = document.getElementById('role');
-  const usernameError = document.getElementById('usernameError');
-  const emailError = document.getElementById('emailError');
-  const passwordError = document.getElementById('passwordError');
-  const roleError = document.getElementById('roleError');
-
-  if (!form || !usernameInput || !emailInput || !passwordInput || !roleInput || !usernameError || !emailError || !passwordError || !roleError) {
-    console.error('Form or input elements not found.');
-    return;
-  }
-
-  form.addEventListener('submit', (e) => {
-    let hasError = false;
-
-    // Username validation
-    if (usernameInput.value.trim().length < 3) {
-      usernameError.classList.remove('hidden');
-      usernameInput.classList.add('border-red-500');
-      usernameInput.focus();
-      hasError = true;
-    } else {
-      usernameError.classList.add('hidden');
-      usernameInput.classList.remove('border-red-500');
-    }
-
-    // Email validation
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(emailInput.value.trim())) {
-      emailError.classList.remove('hidden');
-      emailInput.classList.add('border-red-500');
-      if (!hasError) emailInput.focus();
-      hasError = true;
-    } else {
-      emailError.classList.add('hidden');
-      emailInput.classList.remove('border-red-500');
-    }
-
-    // Password validation
-    if (passwordInput.value.trim().length < 6) {
-      passwordError.classList.remove('hidden');
-      passwordInput.classList.add('border-red-500');
-      if (!hasError) passwordInput.focus();
-      hasError = true;
-    } else {
-      passwordError.classList.add('hidden');
-      passwordInput.classList.remove('border-red-500');
-    }
-
-    // Role validation
-    if (!roleInput.value) {
-      roleError.classList.remove('hidden');
-      roleInput.classList.add('border-red-500');
-      if (!hasError) roleInput.focus();
-      hasError = true;
-    } else {
-      roleError.classList.add('hidden');
-      roleInput.classList.remove('border-red-500');
-    }
-
-    if (hasError) {
-      e.preventDefault();
-    }
-  });
-
-  // Clear errors on input
-  usernameInput.addEventListener('input', () => {
-    if (usernameInput.value.trim().length >= 3) {
-      usernameError.classList.add('hidden');
-      usernameInput.classList.remove('border-red-500');
-    }
-  });
-
-  emailInput.addEventListener('input', () => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (emailPattern.test(emailInput.value.trim())) {
-      emailError.classList.add('hidden');
-      emailInput.classList.remove('border-red-500');
-    }
-  });
-
-  passwordInput.addEventListener('input', () => {
-    if (passwordInput.value.trim().length >= 6) {
-      passwordError.classList.add('hidden');
-      passwordInput.classList.remove('border-red-500');
-    }
-  });
-
-  roleInput.addEventListener('change', () => {
-    if (roleInput.value) {
-      roleError.classList.add('hidden');
-      roleInput.classList.remove('border-red-500');
-    }
-  });
-});
-</script>
