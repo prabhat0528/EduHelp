@@ -1,10 +1,11 @@
-<% layout("/layouts/boilerplate")%>
+<% layout("/layouts/boilerplate") %>
 
 <style>
     body {
-        background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZQBdHjtLFWmksvBHOM40HURcF0C80LC30cQ&s') no-repeat center center fixed;
+        background: url('https://images.unsplash.com/photo-1498721181593-8be06ae6e5a6?crop=entropy&cs=tinysrgb&fit=max&ixid=MnwzNjYxOXwwfDF8c2VhY3J8MXx8fGVkdWNhdGlvbnxlbnwwfHx8fDE2Nzk2MjI1NzA&ixlib=rb-1.2.1&q=80&w=1080') no-repeat center center fixed;
         background-size: cover;
         animation: fadeIn 2s ease-in-out;
+        font-family: 'Arial', sans-serif;
     }
 
     @keyframes fadeIn {
@@ -13,31 +14,66 @@
     }
 
     .overlay {
-        background: rgba(0, 0, 0, 0.5);
+        background: rgba(0, 0, 0, 0.6);
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
     }
+
+    .content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 3rem;
+        z-index: 10;
+    }
+
+    .content h2 {
+        font-size: 3.5rem;
+        color: #fff;
+        font-weight: 700;
+        margin-bottom: 2rem;
+    }
+
+    .point {
+        margin-top: 1.5rem;
+        color: #fff;
+    }
+
+    .point h3 {
+        font-size: 2rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .point p {
+        font-size: 1.1rem;
+        color: rgba(255, 255, 255, 0.8);
+    }
 </style>
 
 <div class="overlay"></div>
 
-<div class="flex flex-row md:flex-row min-h-screen relative">
-    <div class="w-full md:w-1/2 flex flex-col justify-center p-10 bg-white bg-opacity-80 z-10">
-        <h2 class="text-5xl font-bold  mx-2 text-gray-800">Our Vision</h2>
-        <div class="mt-6 mx-2" >
-            <h3 class="text-3xl font-semibold text-gray-800">1. Empowering Lifelong Learning</h3>
-            <p class="text-lg text-gray-600">Our vision is to make high-quality education accessible to everyone, everywhere. We strive to bridge the gap between learners and world-class educators through innovative technology and personalized learning experiences.</p>
+<div class="flex flex-col min-h-screen relative">
+    <div class="content">
+        <h2>Our Vision</h2>
+
+        <div class="point">
+            <h3>1. Empowering Lifelong Learning</h3>
+            <p>We envision a world where education is lifelong, continuous, and accessible to all. Our goal is to provide personalized learning experiences that allow learners to expand their knowledge and skillset at any stage in their life, regardless of their location.</p>
         </div>
-        <div class="mt-6 mx-2">
-            <h3 class="text-3xl font-semibold text-gray-800">2. Democratizing Education</h3>
-            <p class="text-lg text-gray-600">We envision a world where knowledge knows no boundaries. By leveraging cutting-edge technology, we aim to provide equitable access to education, empowering individuals to unlock their full potential.</p>
+
+        <div class="point">
+            <h3>2. Democratizing Education</h3>
+            <p>Our mission is to break down barriers to education. By leveraging cutting-edge technology, we aim to provide equal access to world-class educational resources, enabling individuals to learn, grow, and succeed on their own terms.</p>
         </div>
-        <div class="mt-6 mx-2">
-            <h3 class="text-3xl font-semibold text-gray-800">3. Building a Global Learning Community</h3>
-            <p class="text-lg text-gray-600">Education should be a journey without limits. We aspire to create a vibrant, diverse, and inclusive learning community where learners and educators connect, grow, and innovate together.</p>
+
+        <div class="point">
+            <h3>3. Building a Global Learning Community</h3>
+            <p>Education should be a collaborative and inclusive experience. We strive to create a global network of learners and educators, where diverse ideas are shared, innovation is encouraged, and everyone has the opportunity to contribute to collective progress.</p>
         </div>
     </div>
 </div>

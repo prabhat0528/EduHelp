@@ -1,37 +1,66 @@
-<% layout("/layouts/boilerplate")%>
+<% layout("/layouts/boilerplate") %>
 <div class="row">
-    <h1 class="col-6 offset-3">SignUp for EduHelp</h1>
+    <h1 class="col-6 offset-3 text-center mb-4">Sign Up for EduHelp</h1>
     <div class="col-6 offset-3">
         <form action="/signup" method="POST" class="needs-validation" novalidate>
+            <!-- Username -->
             <div class="mb-3">
                 <label for="username" class="form-label">Username</label>
-            <input  type="text" name="username" id="username" class="form-control" required/>
+                <input type="text" name="username" id="username" class="form-control" required/>
+                <div class="invalid-feedback">Please provide a username.</div>
+                <div class="valid-feedback">Looks Good!</div>
             </div>
-            <div class="valid-feedback">Looks Good!</div>
-        
 
-        
+            <!-- Email -->
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>
-            <input  type="email" name="email" id="email" class="form-control" required/>
-            </div>
-            <div class="valid-feedback">Looks Good!</div>
-      
-            <div class="mb-3">
-                <label for="password" class="form-label">Password</label>
-            <input  type="password" name="password" id="password" class="form-control" required/>
+                <input type="email" name="email" id="email" class="form-control" required/>
+                <div class="invalid-feedback">Please provide a valid email address.</div>
+                <div class="valid-feedback">Looks Good!</div>
             </div>
 
+            <!-- Password -->
             <div class="mb-3">
-                <label for="role">SignUp As:</label>
-                <select id="options" name="role">
+                <label for="password" class="form-label">Password</label>
+                <input type="password" name="password" id="password" class="form-control" required/>
+                <div class="invalid-feedback">Please provide a password.</div>
+                <div class="valid-feedback">Looks Good!</div>
+            </div>
+
+            <!-- Role Selection -->
+            <div class="mb-3">
+                <label for="role" class="form-label">Sign Up As:</label>
+                <select id="role" name="role" class="form-select" required>
+                    <option value="" disabled selected>Select your role</option>
                     <option value="instructor">Instructor</option>
                     <option value="student">Student</option>
                 </select>
+                <div class="invalid-feedback">Please select a role.</div>
             </div>
-            
-            <button class="btn btn-success">SignUp</button>
-      
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-success w-100">Sign Up</button>
         </form>
     </div>
 </div>
+
+<script>
+    // Custom Bootstrap validation for the form
+    (function () {
+        'use strict'
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.querySelectorAll('.needs-validation')
+
+        // Loop over them and prevent submission if invalid
+        Array.prototype.slice.call(forms)
+            .forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+    })()
+</script>

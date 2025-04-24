@@ -87,7 +87,7 @@ app.post('/api/chat', async (req, res) => {
 
         let botReply = response.data?.candidates?.[0]?.content?.parts?.[0]?.text || "Sorry, I couldn't generate a response.";
         
-        // Clean the response to remove markdown
+        
         botReply = botReply
             .replace(/```json/g, '')
             .replace(/```/g, '')
