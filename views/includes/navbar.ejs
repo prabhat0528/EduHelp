@@ -1,79 +1,190 @@
-<nav class="bg-white shadow sticky top-0 z-50">
+<nav class="bg-white shadow-md sticky top-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex justify-between h-16 items-center">
-        <a href="#" class="text-2xl font-bold text-indigo-600"><i class="fa-solid fa-book"></i></a>
+      <div class="flex justify-between items-center h-16">
+        <a href="#" class="text-2xl font-bold text-indigo-600 flex items-center">
+          <i class="fa-solid fa-book mr-2"></i> Courses
+        </a>
   
-        <div class="block lg:hidden">
-          <button id="menu-toggle" class="text-gray-500 focus:outline-none focus:text-gray-700">
+        <div class="lg:hidden">
+          <button id="menu-toggle" class="text-gray-600 hover:text-indigo-600 focus:outline-none focus:ring-2 focus:ring-indigo-500 rounded-md p-2" aria-label="Toggle menu">
             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4 6h16M4 12h16M4 18h16" />
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
             </svg>
           </button>
         </div>
   
-        <div id="navbarNav" class="hidden lg:flex lg:items-center lg:space-x-6 w-full justify-between">
-          <ul class="flex flex-col lg:flex-row gap-2 lg:gap-6">
-            <li><a href="/home" class="text-gray-700 hover:text-indigo-600">Home</a></li>
-            <li><a href="/home/showMyCourses" class="text-gray-700 hover:text-indigo-600">My Courses</a></li>
+        <div id="navbarNav" class="hidden lg:flex lg:items-center lg:space-x-8 w-full justify-between">
+          <ul class="flex flex-col lg:flex-row gap-4 lg:gap-8">
+            <li><a href="/home" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Home</a></li>
+            <li><a href="/home/showMyCourses" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">My Courses</a></li>
             <% if(currUser && currUser.role==='instructor'){%>
-              <li><a href="/createCourse" class="text-indigo-600 font-semibold">Create Course</a></li>
+              <li><a href="/createCourse" class="text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">Create Course</a></li>
             <% } %>
-            <li><a href="/vision" class="text-gray-700 hover:text-indigo-600 font-semibold">Our Vision</a></li>
+            <li><a href="/vision" class="text-gray-600 hover:text-indigo-600 font-semibold transition-colors">Our Vision</a></li>
           </ul>
   
-          <form action="/home/search" method="GET" class="hidden lg:flex items-center gap-2 w-full max-w-md">
-            <input type="search" name="search" placeholder="Search for courses..." class="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring focus:border-indigo-500" />
-            <button type="submit" class="px-4 py-2 border border-green-500 text-green-600 hover:bg-green-500 hover:text-white rounded-md">Search</button>
-          </form>
+          <div class="flex items-center gap-4 w-full max-w-md">
+            <form action="/home/search" method="GET" class="hidden lg:flex items-center gap-2 w-full">
+              <input type="search" name="search" placeholder="Search for courses..." class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" />
+              <button type="submit" class="px-4 py-2 bg-green-500 text-white hover:bg-green-600 rounded-md transition-colors">Search</button>
+            </form>
   
-          <div class="flex items-center gap-4">
-            <% if (!currUser) { %>
-              <a href="/signup" class="text-indigo-600 font-semibold">Sign Up</a>
-              <a href="/login" class="text-indigo-600 font-semibold">Login</a>
-            <% } else { %>
-              <a href="/logout" class="text-red-600 font-semibold">Log out</a>
-            <% } %>
-            <button id="chatbot-toggle" class="px-3 py-2 border border-indigo-600 text-indigo-600 rounded-md hover:bg-indigo-600 hover:text-white">
-              <i class="fa-solid fa-robot"></i> Chat
-            </button>
+            <div class="flex items-center gap-4">
+              <% if (!currUser) { %>
+                <a href="/signup" class="text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">Sign Up</a>
+                <a href="/login" class="text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">Login</a>
+              <% } else { %>
+                <a href="/logout" class="text-red-600 font-semibold hover:text-red-700 transition-colors">Log out</a>
+              <% } %>
+              <button id="chatbot-toggle" class="px-4 py-2 border border-indigo-600 text-indigo-600 rounded-md hover:bg-indigo-600 hover:text-white transition-colors flex items-center gap-2">
+                <i class="fa-solid fa-robot"></i> Chat
+              </button>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </nav>
   
+  <!-- Mobile Menu (shown when hamburger is clicked) -->
+  <div id="mobile-menu" class="lg:hidden hidden bg-white shadow-md">
+    <div class="px-4 py-4 flex flex-col gap-4">
+      <ul class="flex flex-col gap-4">
+        <li><a href="/home" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">Home</a></li>
+        <li><a href="/home/showMyCourses" class="text-gray-600 hover:text-indigo-600 font-medium transition-colors">My Courses</a></li>
+        <% if(currUser && currUser.role==='instructor'){%>
+          <li><a href="/createCourse" class="text-indigo-600 font-semibold hover:text-indigo-700 transition-colors">Create Course</a></li>
+        <% } %>
+        <li><a href="/vision" class="text-gray-600 hover:text-indigo-600 font-semibold transition-colors">Our Vision</a></li>
+      </ul>
+      <form action="/home/search" method="GET" class="flex items-center gap-2">
+        <input type="search" name="search" placeholder="Search for courses..." class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" />
+        <button type="submit" class="px-4 py-2 bg-green-500 text-white hover:bg-green-600 rounded-md transition-colors">Search</button>
+      </form>
+    </div>
+  </div>
+  
   <!-- Chatbot Widget -->
-  <div id="chatbot-container" class="fixed bottom-5 right-5 w-[350px] max-w-full h-[500px] hidden z-[1000]">
-    <div class="bg-white border shadow-lg rounded-lg flex flex-col h-full">
-      <div class="bg-indigo-600 text-white px-4 py-2 flex justify-between items-center rounded-t">
-        <span>Course Assistant</span>
-        <button id="chatbot-close" class="text-white text-xl hover:text-red-300">✕</button>
+  <div id="chatbot-container" class="fixed bottom-4 right-4 w-11/12 max-w-sm sm:max-w-md md:max-w-lg h-[400px] sm:h-[500px] hidden z-[1000]">
+    <div class="bg-white border border-gray-200 shadow-xl rounded-lg flex flex-col h-full">
+      <div class="bg-indigo-600 text-white px-4 py-3 flex justify-between items-center rounded-t-lg">
+        <span class="font-semibold">Course Assistant</span>
+        <button id="chatbot-close" class="text-white hover:text-red-300 focus:outline-none focus:ring-2 focus:ring-red-500 rounded-md p-1" aria-label="Close chatbot">
+          <span class="text-xl">✕</span>
+        </button>
       </div>
-      <div id="chatbot-messages" class="flex-1 p-3 overflow-y-auto"></div>
-      <div class="border-t p-3">
+      <div id="chatbot-messages" class="flex-1 p-4 overflow-y-auto bg-gray-50"></div>
+      <div class="border-t border-gray-200 p-4">
         <div class="flex gap-2">
-          <input type="text" id="chatbot-input" placeholder="Ask me anything..." class="w-full border px-3 py-2 rounded focus:outline-none focus:ring focus:border-indigo-500" />
-          <button id="chatbot-send" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700">Send</button>
+          <input type="text" id="chatbot-input" placeholder="Ask me anything..." class="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors" />
+          <button id="chatbot-send" class="bg-indigo-600 text-white px-4 py-2 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 transition-colors">Send</button>
         </div>
       </div>
     </div>
   </div>
   
   <script>
-    // Toggle menu for mobile
-    document.getElementById('menu-toggle').addEventListener('click', () => {
-      const nav = document.getElementById('navbarNav');
-      nav.classList.toggle('hidden');
+  document.addEventListener('DOMContentLoaded', () => {
+    // Mobile menu toggle
+    const menuToggle = document.getElementById('menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const navbarNav = document.getElementById('navbarNav');
+  
+    if (menuToggle && mobileMenu) {
+      menuToggle.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        navbarNav.classList.toggle('hidden');
+      });
+    }
+  
+    // Chatbot functionality
+    const chatbotToggle = document.getElementById('chatbot-toggle');
+    const chatbotContainer = document.getElementById('chatbot-container');
+    const chatbotClose = document.getElementById('chatbot-close');
+    const chatbotMessages = document.getElementById('chatbot-messages');
+    const chatbotInput = document.getElementById('chatbot-input');
+    const chatbotSend = document.getElementById('chatbot-send');
+  
+    if (!chatbotToggle || !chatbotContainer || !chatbotClose || !chatbotMessages || !chatbotInput || !chatbotSend) {
+      console.error('One or more chatbot elements not found in the DOM.');
+      return;
+    }
+  
+    let hasGreeted = false;
+    let isSending = false;
+  
+    const cleanMessage = (text) => {
+      return text
+        .replace(/```json/g, '')
+        .replace(/```/g, '')
+        .replace(/``/g, '')
+        .replace(/`/g, '')
+        .trim();
+    };
+  
+    const addMessage = (sender, text) => {
+      const messageDiv = document.createElement('div');
+      messageDiv.classList.add('mb-3', sender === 'You' ? 'text-right' : 'text-left');
+      messageDiv.innerHTML = `
+        <div class="${sender === 'You' ? 'bg-indigo-100 text-indigo-800' : 'bg-gray-200 text-gray-800'} inline-block p-3 rounded-lg max-w-[80%]">
+          <strong>${sender}:</strong> ${text}
+        </div>
+      `;
+      chatbotMessages.appendChild(messageDiv);
+      chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+    };
+  
+    const sendMessage = async () => {
+      if (isSending) return;
+      isSending = true;
+  
+      const message = chatbotInput.value.trim();
+      if (!message) {
+        isSending = false;
+        return;
+      }
+  
+      addMessage('You', message);
+      chatbotInput.value = '';
+  
+      try {
+        const response = await axios.post('/api/chat', { message });
+        addMessage('Bot', cleanMessage(response.data.reply));
+      } catch (error) {
+        console.error('Error sending message:', error);
+        let errorMessage = 'Oops, something went wrong! Please try again.';
+        if (error.response) {
+          errorMessage = `Server error: ${error.response.status} - ${error.response.data.reply || 'Unknown error'}`;
+        } else if (error.request) {
+          errorMessage = 'Network error: Unable to reach the server. Please check your connection.';
+        }
+        addMessage('Bot', cleanMessage(errorMessage));
+      } finally {
+        isSending = false;
+      }
+    };
+  
+    chatbotToggle.addEventListener('click', () => {
+      const isHidden = chatbotContainer.classList.contains('hidden');
+      chatbotContainer.classList.toggle('hidden', !isHidden);
+  
+      if (isHidden && !hasGreeted) {
+        addMessage('Bot', 'Hello! How can I assist you with your courses today?');
+        hasGreeted = true;
+      }
     });
   
-    // Chatbot toggle
-    document.getElementById('chatbot-toggle').addEventListener('click', () => {
-      document.getElementById('chatbot-container').style.display = 'block';
+    chatbotClose.addEventListener('click', () => {
+      chatbotContainer.classList.add('hidden');
     });
   
-    document.getElementById('chatbot-close').addEventListener('click', () => {
-      document.getElementById('chatbot-container').style.display = 'none';
+    chatbotSend.addEventListener('click', sendMessage);
+  
+    chatbotInput.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
     });
+  });
   </script>
-  
