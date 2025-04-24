@@ -1,4 +1,3 @@
-```html
 <% layout("/layouts/boilerplate") %>
 
 <div class="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 sm:mt-10">
@@ -50,36 +49,3 @@
   });
 </script>
 
-<style>
-  /* Tailwind-compatible animations */
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateX(-30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .animate-slide-in {
-    animation: slideIn 1s ease-out forwards;
-  }
-
-  .animate-fade-in {
-    animation: fadeInUp 0.8s ease-out forwards;
-  }
-</style>
-```
