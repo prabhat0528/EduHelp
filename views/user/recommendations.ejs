@@ -1,0 +1,93 @@
+<% layout("/layouts/boilerplate") %>
+
+<div class="w-full max-w-3xl mx-auto mt-8 sm:mt-10 px-4 sm:px-6 lg:px-8">
+  <div class="bg-white p-6 sm:p-8 rounded-lg shadow-md">
+    <h3 class="text-2xl sm:text-3xl font-semibold mb-6 text-gray-800">Find Coursera Course Recommendations</h3>
+
+    <form id="recommendForm" class="space-y-6">
+      <!-- Topic -->
+      <div>
+        <label for="topic" class="block text-sm font-medium text-gray-700">Topic</label>
+        <input
+          type="text"
+          id="topic"
+          name="topic"
+          placeholder="Enter course topic (e.g., Python)"
+          required
+          class="mt-1 block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+        />
+      </div>
+
+      <!-- Difficulty Level -->
+      <div>
+        <label for="difficulty" class="block text-sm font-medium text-gray-700">Difficulty Level</label>
+        <select
+          id="difficulty"
+          name="difficulty"
+          required
+          class="mt-1 block w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors"
+        >
+          <option value="" disabled selected>Select Difficulty</option>
+          <option value="Beginner">Beginner</option>
+          <option value="Intermediate">Intermediate</option>
+          <option value="Advanced">Advanced</option>
+        </select>
+      </div>
+
+      <!-- Submit Button -->
+      <div>
+        <button
+          type="submit"
+          class="w-full sm:w-auto px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-colors"
+        >
+          Get Recommendations
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Results -->
+  <div id="results" class="mt-8 space-y-4">
+    <!-- JS will inject course cards here -->
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  const form = document.getElementById('recommendForm');
+  const resultsDiv = document.getElementById('results');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    resultsDiv.innerHTML = `<p class="text-gray-600">Loading...</p>`;
+
+    const topic = document.getElementById('topic').value.trim();
+    const difficulty = document.getElementById('difficulty').value;
+
+    try {
+      const res = await axios.post('/recommend', { topic, difficulty });
+      const data = res.data;
+
+      if (!data || data.length === 0) {
+        resultsDiv.innerHTML = `<p class="text-red-500">No matching courses found.</p>`;
+        return;
+      }
+
+      resultsDiv.innerHTML = '';
+      data.forEach(course => {
+        const card = `
+          <div class="bg-white p-4 rounded shadow hover:shadow-lg transition">
+            <h4 class="text-xl font-semibold text-indigo-700 mb-1">${course['Course Name']}</h4>
+            <p class="text-gray-600">University: ${course['University']}</p>
+            <p class="text-yellow-600 font-medium">Rating: ${course['Rating']}</p>
+            <a href="${course['URL']}" target="_blank" class="text-blue-500 hover:underline mt-1 inline-block">Go to Course</a>
+          </div>
+        `;
+        resultsDiv.innerHTML += card;
+      });
+
+    } catch (err) {
+      resultsDiv.innerHTML = `<p class="text-red-500">An error occurred: ${err.response?.data?.error || err.message}</p>`;
+    }
+  });
+</script>
