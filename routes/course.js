@@ -9,6 +9,11 @@ const {storage}=require("../cloudConfig.js");
 const upload = multer({storage });
 
 
+//Course Recommendation Logic
+
+router.get("/recommendations",(req,res)=>{
+    res.render("user/recommendations");
+})
 // CREATE COURSE LOGIC
 router.post("/createCourse", upload.single("profilePhoto"), async (req, res) => {
     try {
