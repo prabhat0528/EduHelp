@@ -65,7 +65,7 @@
     const difficulty = document.getElementById('difficulty').value;
 
     try {
-      const res = await axios.post('/recommend', { topic, difficulty });
+      const res = await axios.post('https://eduhelp-recommender.onrender.com/recommend', { topic, difficulty });
       const data = res.data;
 
       if (!data || data.length === 0) {
