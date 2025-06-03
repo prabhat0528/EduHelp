@@ -11,24 +11,19 @@ from sklearn.metrics.pairwise import cosine_similarity
 app = Flask(__name__)
 CORS(app)
 
-# Download required NLTK data
 nltk.download('punkt')
 
-# Global stemmer
 stemmer = PorterStemmer()
 
-# Load and preprocess the dataset
 course_df = pd.read_csv('Coursera.csv')
 course_df['tags'] = course_df['Course Description'] + " " + course_df['Skills']
 course_df = course_df[['Course Name', 'University', 'Difficulty Level', 'Course Rating', 'Course URL', 'tags']]
 
-# Text preprocessing function
 def tag_stemmer(text):
     return " ".join([stemmer.stem(word) for word in text.split()]).lower()
 
 course_df['tags'] = course_df['tags'].apply(tag_stemmer)
 
-# Vectorize tags
 cv = CountVectorizer(max_features=4000, stop_words='english')
 cv_matrix = cv.fit_transform(course_df['tags'])
 
@@ -75,6 +70,6 @@ def recommend():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
-# Run the app
+
 if __name__ == '__main__':
     app.run(debug=True)
