@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import pandas as pd
 import numpy as np
+from flask_cors import CORS
 import nltk
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
@@ -8,6 +9,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 
 # Initialize Flask
 app = Flask(__name__)
+CORS(app)
 
 # Download required NLTK data
 nltk.download('punkt')

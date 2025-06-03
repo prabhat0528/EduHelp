@@ -4,6 +4,7 @@ const methodOverride = require("method-override");
 const path = require("path");
 const ExpressError = require("./utils/ExpressError");
 const flash = require("connect-flash");
+const expressFlash = require("express-flash");
 const passport = require("passport");
 const LocalStrategy = require("passport-local");
 const User = require("./models/user");
