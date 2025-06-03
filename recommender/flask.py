@@ -14,37 +14,53 @@ nltk.download('punkt')
 
 # Load and preprocess the dataset
 stemmer = PorterStemmer()
-df = pd.read_csv('Coursera.csv')
-df['tags'] = df['Course Description'] + " " + df['Skills']
-df = df[['Course Name', 'University', 'Difficulty Level', 'Course Rating', 'Course URL', 'tags']]
+course_df=pd.read_csv('Coursera.csv')
+# print(course_df.head())
+course_df['tags']=course_df['Course Description'] + course_df['Skills']
+course_df=course_df[['Course Name','University','Difficulty Level', 'Course Rating','Course URL','tags']]
 
-def tag_stemmer(text):
-    return " ".join([stemmer.stem(word) for word in text.split()]).lower()
+def tag_stemmer(obj):
+    l=[]
+    for i in obj.split():
+        l.append(stemmer.stem(i))
+    return " ".join(l)
 
-df['tags'] = df['tags'].apply(tag_stemmer)
+course_df['tags']=course_df['tags'].apply(tag_stemmer).apply(lambda x:x.lower())
 
-# Fit vectorizer once
-cv = CountVectorizer(max_features=4000, stop_words='english')
-cv.fit(df['tags'])
+cv=CountVectorizer(max_features=4000,stop_words='english')
+vector=cv.fit_transform(course_df['tags']).toarray()
 
-# Function to get recommendations
-def recommend_courses(search_query, difficulty_level):
+similarity_metrix=cosine_similarity(vector)
+sorted(list(enumerate(similarity_metrix[0])), reverse=True,key=lambda x:x[1])[1:6]
+
+
+def recommend_courses(search_query, difficulty_level, course_df, vectorizer):
     search_query = " ".join([stemmer.stem(word) for word in search_query.lower().split()])
-    search_vector = cv.transform([search_query]).toarray()
-    similarity_scores = cosine_similarity(search_vector, cv.transform(df['tags']).toarray())
-
+    
+    search_vector = vectorizer.transform([search_query]).toarray()
+    
+    similarity_scores = cosine_similarity(search_vector, vectorizer.transform(course_df['tags']).toarray())
+    print(similarity_scores)
+    
+    
     sorted_indices = np.argsort(similarity_scores[0])[::-1]
+    
+   
+    
+    
     recommendations = []
     for idx in sorted_indices:
-        if df.iloc[idx]['Difficulty Level'].lower() == difficulty_level.lower():
+        if course_df.iloc[idx]['Difficulty Level'].lower() == difficulty_level.lower():
             recommendations.append({
-                'Course Name': df.iloc[idx]['Course Name'],
-                'University': df.iloc[idx]['University'],
-                'Rating': df.iloc[idx]['Course Rating'],
-                'URL': df.iloc[idx]['Course URL']
+                'Course Name': course_df.iloc[idx]['Course Name'],
+                'University': course_df.iloc[idx]['University'],
+                'Rating': course_df.iloc[idx]['Course Rating'],
+                'URL': course_df.iloc[idx]['Course URL']
             })
-        if len(recommendations) >= 5:
+        
+        if len(recommendations) >= 5: 
             break
+    
     return recommendations
 
 # Route to handle recommendation requests
@@ -58,7 +74,7 @@ def recommend():
         return jsonify({'error': 'Missing topic or difficulty'}), 400
 
     try:
-        recommendations = recommend_courses(topic, difficulty)
+        recommendations = recommend_courses(topic, difficulty,course_df,cv)
         return jsonify(recommendations)
     except Exception as e:
         return jsonify({'error': str(e)}), 500
